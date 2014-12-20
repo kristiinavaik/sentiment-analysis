@@ -1,5 +1,6 @@
 import os
 import re
+from random import randrange
 import string
 import time
 
@@ -7,6 +8,66 @@ import nltk
 
 
 CLASSIFIER_FILE = 'cl.pkl'
+
+
+class Responder(object):
+
+    POSITIVE_RESPONSES_FILE = 'positive_responses.txt'
+    NEGATIVE_RESPONSES_FILE = 'negative_responses.txt'
+    NEUTRAL_RESPONSES_FILE = 'neutral_responses.txt'
+
+    def __init__(self):
+        self.positive_responses = self._init_responses(self.POSITIVE_RESPONSES_FILE)
+        self.negative_responses = self._init_responses(self.NEGATIVE_RESPONSES_FILE)
+        self.neutral_responses = self._init_responses(self.NEUTRAL_RESPONSES_FILE)
+        self.used_positive_responses = []
+        self.used_negative_responses = []
+        self.used_neutral_responses = []
+
+    def _init_responses(self, filename):
+        responses = []
+        with open(filename) as f:
+            for line in f:
+                if line.strip():
+                    responses.append(line.strip())
+        return responses
+
+    def get_response(self, sentiment):
+        if sentiment.is_positive():
+            return self._get_positive_response()
+        elif sentiment.is_negative():
+            return self._get_negative_response()
+        elif sentiment.is_neutral():
+            return self._get_neutral_response()
+        else:
+            raise ValueError("Invalid sentiment")
+
+    def _get_positive_response(self):
+        if not self.positive_responses:
+            self.positive_responses = self.used_positive_responses
+            self.used_positive_responses = []
+        index = randrange(0, len(self.positive_responses))
+        response = self.positive_responses.pop(index)
+        self.used_positive_responses.append(response)
+        return response
+
+    def _get_negative_response(self):
+        if not self.negative_responses:
+            self.negative_responses = self.used_negative_responses
+            self.used_negative_responses = []
+        index = randrange(0, len(self.negative_responses))
+        response = self.negative_responses.pop(index)
+        self.used_negative_responses.append(response)
+        return response
+
+    def _get_neutral_response(self):
+        if not self.neutral_responses:
+            self.neutral_responses = self.used_neutral_responses
+            self.used_neutral_responses = []
+        index = randrange(0, len(self.neutral_responses))
+        response = self.neutral_responses.pop(index)
+        self.used_neutral_responses.append(response)
+        return response
 
 
 class Sentiment(object):

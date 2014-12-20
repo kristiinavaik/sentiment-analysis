@@ -9,7 +9,7 @@ from naoqi import ALModule
 
 from optparse import OptionParser
 
-from classifier import Classifier
+from classifier import Classifier, Responder
 
 if sys.version_info.major == 2:
     input = raw_input
@@ -24,11 +24,14 @@ class TextAnalyzerModule(ALModule):
     def __init__(self, name):
         ALModule.__init__(self, name)
         self.classifier = Classifier()
+        self.responder = Responder()
         self.tts = ALProxy("ALTextToSpeech")
 
     def say(self, text):
         sentiment = self.classifier.classify(text)
-        self.tts.say('That is %s!' % sentiment.get_string_value())
+        response = self.responder.get_response(sentiment)
+        print("Responding with '%s'" % response)
+        self.tts.say(response)
 
 def main():
     myBroker = ALBroker("myBroker",
