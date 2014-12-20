@@ -12,7 +12,9 @@ it is faulty when it comes to regular sentences (eg greetings), but it is
 good with sentences that have some kind of an emotion in it (eg opinion).
 Hopefully you'll have as much fun with it as I did.
 
-How to:
+How to
+------
+
 This module uses `Python` and `NLTK` (natural language toolkit). 
 Therefore to use this dialogue module, first of all you need to install
 [nltk](http://www.nltk.org/install.html).
