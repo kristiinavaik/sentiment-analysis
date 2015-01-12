@@ -33,13 +33,15 @@ class TextAnalyzerModule(ALModule):
         print("Responding with '%s'" % response)
         self.tts.say(response)
 
+
 def main():
-    myBroker = ALBroker("myBroker",
-       "0.0.0.0",   # listen to anyone
-       0,           # find a free port and use it
-       NAO_IP,      # parent broker IP
-       NAO_PORT     # parent broker port
-   )
+    myBroker = ALBroker(
+        "myBroker",
+        "0.0.0.0",   # listen to anyone
+        0,           # find a free port and use it
+        NAO_IP,      # parent broker IP
+        NAO_PORT     # parent broker port
+    )
 
     text_analyzer = TextAnalyzerModule("TextAnalyzer")
     try:
