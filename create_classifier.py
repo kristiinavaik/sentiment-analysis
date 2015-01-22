@@ -7,6 +7,8 @@ except ImportError:
 import os
 
 import nltk.classify.util
+import collections
+import nltk.metrics
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import movie_reviews as reviews
 from nltk import word_tokenize
@@ -47,8 +49,23 @@ print('Train on %d instances, test on %d instances' %
       (len(trainfeats), len(testfeats)))
 
 classifier = NaiveBayesClassifier.train(trainfeats)
+
 print('Accuracy: %f' % nltk.classify.util.accuracy(classifier, testfeats))
 classifier.show_most_informative_features()
+refsets = collections.defaultdict(set)
+testsets = collections.defaultdict(set)
+
+
+for i, (feats, label) in enumerate(testfeats):
+    refsets[label].add(i)
+    observed = classifier.classify(feats)
+    testsets[observed].add(i)
+
+print('pos precision:', nltk.metrics.precision(refsets['pos'], testsets['pos']))
+print('pos recall:', nltk.metrics.recall(refsets['pos'], testsets['pos']))
+
+print('neg precision:', nltk.metrics.precision(refsets['neg'], testsets['neg']))
+print('neg recall:', nltk.metrics.recall(refsets['neg'], testsets['neg']))
 
 print("Serialize the classifier")
 with open('cl.pkl', 'wb') as out:
