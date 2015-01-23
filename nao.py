@@ -1,4 +1,5 @@
 # -*- encoding: UTF-8 -*-
+# Kristiina Vaik - written for the MTAT.06.048 course
 
 import sys
 import time

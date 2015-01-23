@@ -1,3 +1,10 @@
+# The creation of the naive Bayes classifier:
+# Kristiina Vaik - modified from "Natural language processing with Python"
+# (http://www.nltk.org/book/ch06.html) for the MTAT.06.048 course
+
+# Calculation of metrics (precision & recall):
+# Copied from Jacon Perkins "Text Classification for Sentiment Analysis - Precision and Recall"
+
 try:
     import cPickle as pickle
     print("cPickle import successful")
@@ -56,16 +63,18 @@ refsets = collections.defaultdict(set)
 testsets = collections.defaultdict(set)
 
 
+print("Calculating precision and recall:")
 for i, (feats, label) in enumerate(testfeats):
     refsets[label].add(i)
     observed = classifier.classify(feats)
     testsets[observed].add(i)
 
-print('pos precision:', nltk.metrics.precision(refsets['pos'], testsets['pos']))
-print('pos recall:', nltk.metrics.recall(refsets['pos'], testsets['pos']))
+print('Positive class precision:', nltk.metrics.precision(refsets['pos'], testsets['pos']))
+print('Positive class recall:', nltk.metrics.recall(refsets['pos'], testsets['pos']))
 
-print('neg precision:', nltk.metrics.precision(refsets['neg'], testsets['neg']))
-print('neg recall:', nltk.metrics.recall(refsets['neg'], testsets['neg']))
+print('Negative class precision:', nltk.metrics.precision(refsets['neg'], testsets['neg']))
+print('Negative class recall:', nltk.metrics.recall(refsets['neg'], testsets['neg']))
+print('\n')
 
 print("Serialize the classifier")
 with open('cl.pkl', 'wb') as out:

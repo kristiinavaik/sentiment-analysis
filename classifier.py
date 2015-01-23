@@ -1,9 +1,10 @@
+# Kristiina Vaik - written for the MTAT.06.048 course
+
 import os
 import re
 from random import randrange
 import string
 import time
-
 import nltk
 
 
